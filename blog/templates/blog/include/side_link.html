@@ -1,0 +1,6 @@
+    <div id="side-var">
+        <p id="menuline">リンク</p>
+        {% for link in side_links.all %}
+          <div id="usertext"><a href="{{ link.url }}" >{{ link.name }}</a></div>
+        {% endfor %}
+    </div>

@@ -1,0 +1,10 @@
+
+    <div id="side-var">
+        {% for category in side_category.all %}
+        <p id="menuline">{{ category.name }}</p>
+          {% for post in category.post_set.all %}
+                <div id="usertext"><a href="{% url 'blog:post_detail' post.id %}">{{ post.title }}</a></div>
+          {% endfor %}
+        {% endfor %}
+    </div>
+    {% include "blog/include/side_link.html" %}

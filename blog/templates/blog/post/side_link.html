@@ -1,0 +1,24 @@
+    <div id="bg-white text-gray-900">
+		<ul class="mt-4">
+        <i class="bx bx-folder-open mx-2 bx-blue"></i><span class="px-2 text-white font-bold bg-gray-400 rounded">リンク</span>
+        {% for link in side_links.all %}
+		<li class="mb-1 group">
+			<a href="{{ link.url }}" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+				<i class="bx bx-link bx-xs mr-3 bx-yellowgreen"></i>
+				<span class="text-xs">{{ link.name }}</span>
+			</a>
+		</li>
+        {% endfor %}
+		</ul>
+    </div>
+	<style>
+		.bx-red:before{
+		  color: red;
+		}
+		.bx-blue:before{
+		  color: blue;
+		}
+		.bx-yellowgreen:before{
+		  color: yellowgreen;
+		}
+	</style>

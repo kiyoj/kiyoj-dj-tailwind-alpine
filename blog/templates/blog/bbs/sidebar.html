@@ -1,0 +1,48 @@
+
+    <div class="pl-2">
+		<form class="max-w-md mx-auto" method="GET" action="/bbs/search">   
+			<label for="default-search" class="mb-2 text-sm font-medium text-gray-900 sr-only dark:text-white">Search</label>
+			<div class="relative">
+				<div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+					<svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+						<path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+					</svg>
+				</div>
+				<input type="text" id="search" name="search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="検索文字入力" required />
+				<button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">検索</button>
+			</div>
+		</form>
+		<ul class="mt-4">
+		<i class="bx bx-folder-open mx-2 bx-blue"></i><span class="px-2 text-white font-bold bg-gray-400 rounded">BBSメニュー</span>
+		<li class="mb-1 group">
+        	<a href="{% url 'blog:bbs_index' %}" class="flex font-semibold items-center py-2 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+				<i class="bx bx-file bx-xs mr-3 bx-yellowgreen"></i>
+				<span class="text-xs">最近の10件</span>
+			</a>
+		</li>
+        {% for bbs in side_bbstitles %}
+		   <li class="mb-1 group">
+           <a href="{% url 'blog:bbs_detail' bbs.id %}" class="flex font-semibold items-center py-1 px-4 text-gray-900 hover:bg-gray-950 hover:text-gray-100 rounded-md group-[.active]:bg-gray-800 group-[.active]:text-white group-[.selected]:bg-gray-950 group-[.selected]:text-gray-100">
+			<i class="bx bx-file bx-xs mr-3 bx-yellowgreen"></i>
+			   <span class="text-xs">{{ bbs.maintitle }}</span>
+               <span class="text-green-600">( {{ bbs.num_posts }} )</span>
+			</a>
+		  </li>
+
+        {% endfor %}
+		</ul>
+    </div>
+	{% include "blog/post/side_link.html" %}
+
+	<style>
+		.bx-red:before{
+		  color: red;
+		}
+		.bx-blue:before{
+		  color: blue;
+		}
+		.bx-yellowgreen:before{
+		  color: yellowgreen;
+		}
+	</style>
+

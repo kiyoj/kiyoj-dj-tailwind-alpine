@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% load static %}
+{% load blog %}
+{% load tailwind_filters %}
+
+
+{% block title %}投稿編集 | {{ block.super }}{% endblock %}
+
+{% block sidebar %}
+	{% include "blog/bbs/sidebar.html" %}
+{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+
+        <main class="markdown">
+              <h4 class="mb-4">新規|編集フォーム</h4>
+              <form method="POST" onsubmit="return false;" action="">
+                {% csrf_token %}
+                {{ form|crispy }}
+				<hr />
+				<div x-data="{
+					isShow: false,
+					spam_text: '',
+					str_random: {{random_text}},
+					isShowCheck() { if (this.str_random==this.spam_text) {this.isShow=true}else{this.isShow=false} } 
+				}">
+                <p class="text-blue-500 hover:text-blue-700"><a href="https://ja.wikipedia.org/wiki/Markdown" target="_blank">markdown 書式参考サイト</a></p>
+				<label for="random_label">スパム対策  {{ random_text }} 登録ボタンが表示されます。</label>
+				<input
+					@keyup="isShowCheck()"
+					type="text"
+					class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+					id="spam"
+					name="spam"
+					placeholder="スパムの防止です {{random_text}}を入力して下さい"
+					x-model="spam_text"
+				>
+				<br />
+				<input x-show="isShow" type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" value="登録"  onclick="submit();">
+				<!--
+                <button x-show="isShow" type="submit" class="btn btn-primary">送信</button>
+
+				input type="button" にする事でエンターキーでの送信を防止する
+				<input x-show="isShow" type="button" class="btn btn-primary" @cleck="submit()" value="送信" />
+				-->
+				<br />
+				<br />
+				<br />
+				</div>
+
+            </form>
+            {{ form.media }}
+			<!-- highlight.js関連の読み込み -->
+			{% include "blog/include/hjis_preview.html" %}
+
+        </main>
+    </div>
+</div>
+
+{% endblock %}

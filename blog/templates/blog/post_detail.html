@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load blog %}
+
+
+{% block title %}投稿一覧 | {{ block.super }}{% endblock %}
+
+{% block sidebar %}
+	{% include "blog/post/sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+        <main >
+            <article class="blog-area">
+                <h2 id="labeltitleRed" class="text-2xl">{{ post.title}}</h2>
+                {% if request.user.is_superuser %}
+                <p class="mt-2">
+                    <a class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" href="{% url 'blog:post_add' %}">新規登録</a>
+                    <a class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" href="{% url 'blog:post_update' post.pk %}">編集</a>
+                </p>
+                {% endif %}
+                <div id="timetext">カテゴリー：{{post.category}} 作成日:{{post.created_at}}</div>
+                {# <div id="chatheader">{% if request.user.is_superuser %}<a href="{% url 'blog:post_detail' pk=post.id %}" style="color: yellowgreen">修正</a>{% endif %}</div> #}
+                <p class="markdown">{{post.text|markdown_to_html}}</p>
+            </article>
+            {# <a href="{% url 'admin:index' %}">admin</a> #}
+            {# <p><a class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" href="{% url 'blog:post_index' %}">戻る</a></p> #}
+            {# ここへコメント投稿フォーム #}
+            <article class="comment-area">
+              <p class="mt-2"><a class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" href="{% url 'blog:post_comment_form' post.id %}">コメントを投稿する</a></p>
+			  <br />
+              {% for comment in post.comment_set.all %}
+
+                {% if comment.is_public %}
+                  <div id="commentline">お名前：{{comment.name}} 作成日：{{comment.created_at}}</div>
+                  <sapn class="markdown">{{comment.text|markdown_to_html_with_escape}}</sapn>
+                {% elif request.user.is_superuser %}
+                  <h5 class="text-lg text-red-700 text-blod" >このコメントはスーパーユーザ以外は表示していません</h5>
+                  <div id="commentline">お名前：{{comment.name}} 作成日：{{comment.created_at}}</div>
+                  <span class="markdown">{{comment.text|markdown_to_html_with_escape}}</span>
+                {% endif %}
+
+                {% if request.user.is_superuser %}
+                <div class="btn-group mt-2" role="group" aria-label="...">
+                  <form method="post" action="{% url 'blog:post_comment_on' pk=comment.id %}">{% csrf_token %}
+                    <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="submit" onclick='return confirm("本当に公開しますか？");'>コメント公開</a>
+
+                  </form>
+                  <form method="post" action="{% url 'blog:post_comment_off' pk=comment.id %}">{% csrf_token %}
+                    <button class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700" type="submit" onclick='return confirm("本当に未公開しますか？");'>コメント未公開</a>
+
+                  </form>
+                </div>
+                {% endif %}
+              {% endfor %}
+
+            </article>
+        </main>
+
+{% endblock %}

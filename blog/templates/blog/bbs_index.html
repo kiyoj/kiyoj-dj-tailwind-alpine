@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+{% load blog %}
+
+{% block title %}bbs一覧 | {{ block.super }}{% endblock %}
+
+{% block sidebar %}
+	{% include "blog/bbs/sidebar.html" %}
+{% endblock %}
+
+
+{% block content %}
+  <div class="row">
+    <main class="">
+
+      {% include "blog/post/pagenation.html" %}
+      {% for bbs in object_list %}
+
+
+        <div id="chatheader2">{{bbs.bbstitle.maintitle}}:({{bbs.cid}}) 作成者:{{bbs.name}} 記録日:{{bbs.created_at}}</div>
+
+        <div id="timetext">{{ bbs.bbstitle.subtitle }}</div>
+
+
+        {# <div id="chatheader">{% if request.user.is_authenticated %}<a href="{% url 'blog:bbs_edit' pk=bbs.id %}" style="color: green">修正</a>{% endif %}</div> #}
+        {% if bbs.is_public %}
+        <div class="open"><p class="markdown">{{bbs.comment|markdown_to_html}}</p></div>
+        {% else %}
+        <p class="text-blod">非表示設定になっています。</p>
+        {% endif %}
+        <hr />
+      {% endfor %}
+      {% include "blog/post/pagenation.html" %}
+    </main>
+  </div>
+  {% block myscript %}
+  <!-- 
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/2.2.1/jquery.min.js"></script>
+  -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+   <script type="text/javascript" src="{% static 'js/readmore.min.js' %}"></script>
+   <!-- <script src="https://cdn.jsdelivr.net/npm/readmore-js@2.2.1/readmore.min.js"></script> -->
+   <script>
+	  $(function () {
+		$('.open').readmore();
+	  });
+   </script>
+
+   <script>
+     $(function () {
+        $('.open').readmore({
+          speed: 500,
+          collapsedHeight: 120, //105,
+          moreLink: '<span class="rightpos text-right"><a href="#" class="px-2 text-blue-600 hover:text-white hover:bg-blue-700 rounded-md">もっと読む</a></span>',
+          lessLink: '<span class="rightpos text-right"><a href="#" class="px-2 text-right text-blue-600 hover:text-white hover:bg-blue-700 rounded-md">閉じる</a></span>',
+          //moreLink: '<a class="btn btn-outline-primary" style="width:8rem;height:2rem;" href="#">もっと読む</a>',
+          //lessLink: '<a class="btn btn-outline-success" style="width:8rem;height:2rem;" href="#">閉じる</a>',
+        });
+     });
+   </script>
+   <style>
+	.rightpos {
+		display: flex;
+		justify-content: flex-end;
+	}
+	</style>
+   {% endblock %}
+{% endblock %}

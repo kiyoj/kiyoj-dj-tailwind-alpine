@@ -1,0 +1,134 @@
+
+{% load static tailwind_tags %}
+
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+    <title>{% block title %}Django + Markdownx + Tailwind CSS + AlpineJS{% endblock %}</title>
+	<!--<link rel="icon" href="{% static 'img/favicon.ico' %}"> -->
+	<link rel="stylesheet"  href="{% static 'css/mystyle.css' %}" >
+	<link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+	<link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+
+	<!--
+	<link rel="stylesheet" type="text/css" href="{% static 'css/md_taiwind.css' %}" />
+	-->
+	<!--
+	<link rel="stylesheet" type="text/css" href="{% static 'css/md_mycss.css' %}" />
+	-->
+	<!--
+	<script src="https://cdn.tailwindcss.com"></script>
+	-->
+
+	<!-- flowbite css 
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.css" rel="stylesheet" />
+	-->
+	<!-- Font 
+	<link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
+	<link href="https://cdn.jsdelivr.net/npm/@mdi/font@5.x/css/materialdesignicons.min.css" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Material+Icons+Round|Material+Icons+Sharp|Material+Icons+Two+Tone" rel="stylesheet">
+	-->
+	<!--
+	<link rel="stylesheet" href="{% static 'css/style.css' %}">
+	<link rel="stylesheet" href="{% static 'css/tailwind.css' %}">
+	-->
+	<!-- <script src="https://cdn.jsdelivr.net/npm/readmore-js@2.2.1/readmore.min.js"></script> -->
+    
+	<!--highlight.js -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/styles/dracula.min.css">
+
+	<!-- AlpineJS -->
+	<script defer src="https://unpkg.com/alpinejs@3.13.4/dist/cdn.min.js"></script>
+
+	<!-- github-markdown
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/github-markdown-css/5.5.1/github-markdown.min.css
+	" rel="stylesheet">
+	 -->
+	 {% tailwind_css %}
+	<!-- <link rel="stylesheet" href="github-markdown.css"> -->
+	<script>
+      document.addEventListener('alpine:init', () => {
+      Alpine.store('darkMode', {
+        // 初期値の判定（localStorage にあるか、無ければOSの設定を参照）
+        on: localStorage.getItem('darkMode') === 'true' || 
+            (!('darkMode' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches),
+
+        toggle() {
+          this.on = !this.on;
+          localStorage.setItem('darkMode', this.on);
+          this.updateClass();
+        },
+
+        updateClass() {
+          if (this.on) {
+            document.documentElement.classList.add('dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+          }
+        }
+      });
+
+      // ページ読み込み時にクラスを即時適用
+      Alpine.store('darkMode').updateClass();
+    });
+    </script>
+
+	{% block mylink %}
+	{% endblock %}
+
+	{% block mycss %}
+	{% endblock %}
+</head>
+
+<body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen transition-colors duration-200">
+	<!--highlight.js -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.10/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+
+	{% block myscript %}
+	{% endblock %}
+
+	<div x-data="{isOpen:true}" class="flex h-full bg-gray-100">
+		<div class="flex-1 flex flex-col overflow-hidden">
+		<!-- top -->
+	
+		{% block top%}
+		{% include "base/flownav.html" %}
+		{% endblock%}
+	
+		<!-- sidebar -->
+		<div class="flex min-h-screen bg-white text-gray-900 dark:bg-gray-900 dark:text-white">
+			<aside x-show="isOpen" class="flex w-72 flex-col bg-white overflow-y-auto mb-0">
+			{% block sidebar%}
+			{% endblock%}
+			</aside>
+    		<main class="flex flex-col w-full  overflow-y-auto m-2 mb-0 dark:bg-gray-900 dark:text-white">
+			<!-- class="container mx-auto mt-4"-->
+        	{% block content %}
+        	{% endblock content %}
+			</main>
+		</div>
+		{% block footer %}
+		<!-- footer -->
+		<footer class="py-2 h-10 bg-gray-100 text-center items-center text-gray-900 sticke bottom-0">
+			このサイトでは クッキーを使っています。
+		</footer>
+		
+		{% endblock %}
+		</div>
+	</div>
+	<!-- flowbite src
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
+	-->
+
+</body>
+
+</html>

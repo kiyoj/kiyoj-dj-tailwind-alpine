@@ -1,0 +1,58 @@
+<nav aria-label="ページネーション">
+	{% if is_paginated %}
+	<ul class="pagination pagination-sm">
+
+		{% if page_obj.has_previous %}
+			<li class="page-item">
+				<a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="前へ">
+					<span aria-hidden="true">&laquo;</span>
+				</a>
+			</li>
+		{% endif %}
+
+			<!--
+			{% if  page_obj.paginator.num_pages == page_obj.number %}
+				<li class="page-item active">
+					<a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a>
+				</li>
+			{% else %}
+
+				<li class="page-item">
+					<a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+				</li>
+			-->
+
+           {% if page_obj.has_previous %}
+                {% if page_obj.previous_page_number != 1 %}
+                    <li class="page-item"><a class="page-link" href="?page=1">1</a></li>
+                    <li><span class="page-ellipsis">&hellip;</span></li>
+                {% endif %}
+                <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">{{ page_obj.previous_page_number }}</a></li>
+           {% endif %}
+			  <!--
+               <li><a class="page-link is-current" href="?page={{ page_obj.number }}" >{{ page_obj.number }}</a></li>
+               -->
+
+		   <li class="page-item active"><a class="page-link" href="?page={{ page_obj.number }}">{{ page_obj.number }}</a></li>
+
+           {% if page_obj.has_next %}
+		        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">{{ page_obj.next_page_number }}</a></li>
+                {% if page_obj.next_page_number != page_obj.paginator.num_pages %}
+                    <li><span class="page-ellipsis">&hellip;</span></li>
+                    <li class="page-item"><a class="page-link" href="?page={{ page_obj.paginator.num_pages }}">{{ page_obj.paginator.num_pages }}</a></li>
+
+                {% endif %}
+              {% endif %}
+		   {% endif %}
+
+		{% if page_obj.has_next %}
+			<li class="page-item">
+				<a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="次へ">
+					<span aria-hidden="true">&raquo;</span>
+				</a>
+			</li>
+		{% endif %}
+
+	</ul>
+	{% endif %}
+</nav>

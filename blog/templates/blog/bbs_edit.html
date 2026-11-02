@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% load static %}
+{% load blog %}
+{% load tailwind_filters %}
+
+{% block title %}投稿編集 | {{ block.super }}{% endblock %}
+
+{% block sidebar %}
+	{% include "blog/bbs/sidebar.html" %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row">
+
+        <main class="markdown">
+            {% if pk %}
+              <!-- <a href="{% url 'blog:bbs_detail' pk=bbs_id %}" class="btn btn-secondary btn-sm">戻る</a> -->
+                <!-- <a href="{% url 'blog:bbs_detail' pk=pk %}" class="btn btn-secondary btn-sm">戻る</a> -->
+              <h4 class="mb-4">編集フォーム({{ bbs.bbstitle.maintitle }})</h4>
+              <form method="POST" action="{% url 'blog:bbs_update' bbs.id %}">
+
+            {% else %}
+              <h5 class="mb-4 text-xl">新規フォーム</h5>
+              <form method="POST" action="{% url 'blog:bbs_add' %}">
+
+            {% endif %}
+                {% csrf_token %}
+                {{ form|crispy }}
+                <p class="text-blue-500 hover:text-blue-700"><a href="https://ja.wikipedia.org/wiki/Markdown" target="_blank">markdown 書式参考サイト</a></p>
+                <button type="submit" class="text-blue-700 hover:text-white border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2 dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500 dark:focus:ring-blue-800">送信</button>
+
+            </form>
+            {{ form.media }}
+			<!-- highlight.js関連の読み込み -->
+			{% include "blog/include/hjis_preview.html" %}
+
+        </main>
+    </div>
+</div>
+
+{% endblock %}

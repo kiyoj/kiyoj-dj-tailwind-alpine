@@ -1,0 +1,10 @@
+<!--
+    <div id="side-var">
+        <p id="menuline">旧BBSメニュー</p>
+        <div id="usertext"><a href="{% url 'blog:fzug_index' %}">最近の10件</a></div>
+        {% for fzug in fzug_mains %}
+          <div id="usertext"><a href="{% url 'blog:fzug_content' pk=fzug.mid %}">{{fzug.maintitle}}</a></div>
+        {% endfor %}
+    </div>
+    {% include "blog/include/side_link.html" %}
+-->
